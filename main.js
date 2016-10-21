@@ -1,6 +1,7 @@
 (function(){
 
 function main(){
+    draw_intersecting_rectangles();
     draw_two_triangles();
     draw_smiley_face();
     draw_triangle();
@@ -10,7 +11,26 @@ function main(){
     draw_cubic_curves();
     draw_game_map();
     draw_path2d();
+    fill_style_palettes();
+    stroke_palettes();
 }
+
+
+function draw_intersecting_rectangles(){
+    var canvas = document.createElement("canvas");
+    document.body.append(canvas);
+
+    if(canvas.getContext){
+        var ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "rgb(200, 0, 0)";
+        ctx.fillRect(10, 10, 50, 50);
+
+        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+        ctx.fillRect(30, 30, 50, 50);
+    }
+}
+
 
 function draw_two_triangles(){
     var canvas = document.createElement("canvas");
@@ -256,6 +276,48 @@ function draw_path2d(){
         ctx.fill(circle);
     }
 }
+
+function fill_style_palettes(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    for(var i=0; i<7; i++){
+      for(var j=0; j<7; j++){
+        var rgbValue = "rgb(" + 
+                            Math.floor(255 - i*42.5) + ", " +
+                            Math.floor(255 - j*42.5) + ", 0)";
+        ctx.fillStyle = rgbValue;         
+        ctx.fillRect(j*25, i*25, 25, 25);
+      }
+    }
+  }
+}
+
+
+function stroke_palettes(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    for (var i=0; i<6; i++){
+      for (var j=0; j<6; j++){
+        ctx.beginPath();
+        ctx.arc(12.5+j*25, 12.5+i*25, 10, 0, Math.PI*2, true);
+        var rgbValue = "rgb(" + 
+                            Math.floor(255 - i*42.5) + ", " +
+                            Math.floor(255 - j*42.5) + ", 0)";
+        ctx.strokeStyle = rgbValue;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
 
 main();
 
