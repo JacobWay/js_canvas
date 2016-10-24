@@ -13,6 +13,18 @@ function main(){
     draw_path2d();
     fill_style_palettes();
     stroke_palettes();
+    global_alpha();
+    rgba_rectangles();
+    line_width();
+    line_cap();
+    line_join();
+    miter_limit();
+    line_dash();
+    linear_gradient();
+    radial_gradient();
+    create_pattern();
+    shadows();
+    fill_rules();
 }
 
 
@@ -318,6 +330,322 @@ function stroke_palettes(){
   }
 }
 
+
+function global_alpha(){
+  // create canvas
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+
+    // draw rectangle
+    ctx.fillStyle = "#FD0";
+    ctx.fillRect(0, 0, 75, 75);
+    ctx.fillStyle = "#6C0";
+    ctx.fillRect(75, 0, 75, 75);
+    ctx.fillStyle = "#09F";
+    ctx.fillRect(0, 75, 75, 75);
+    ctx.fillStyle = "#F30";
+    ctx.fillRect(75, 75, 75, 75);
+    ctx.fillStyle = "#FFF";
+
+    ctx.globalAlpha = 0.2;
+
+    // draw circles
+    var centerX = 75, centerY = 75;
+    for (var i=0; i<7; i++){
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, (i+1)*10, 0, Math.PI*(2), false);
+      ctx.fill();
+    }
+
+  }
+}
+
+
+function rgba_rectangles(){
+  // create canvas
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // draw large rectangle of banner
+    ctx.fillStyle = "rgb(255, 0, 0)";
+    ctx.fillRect(0, 0, 300, 50);
+    ctx.fillStyle = "rgb(0, 255, 0)";
+    ctx.fillRect(0, 50, 300, 50);
+    ctx.fillStyle = "rgb(0, 0, 255)";
+    ctx.fillRect(0, 100, 300, 50);
+
+    // draw small rectangles of grids
+    for (var i=0; i<3; i++){
+      for (var j=0; j<10; j++){
+        rgbaValue = "rgba(255, 255, 255, " + j*0.1 + ")";
+        ctx.fillStyle = rgbaValue;
+        ctx.fillRect(j*30, i*50, 30, 50);
+      }
+    }
+  }
+}
+
+function line_width(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    for(var i=1; i<9; i++){
+      ctx.lineWidth = 1 + i;
+      ctx.beginPath();
+      ctx.moveTo(i*10, 0);
+      ctx.lineTo(i*10, 150);
+      ctx.stroke();
+    }
+  }
+}
+
+function line_cap(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // draw guide lines
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(10, 30);
+    ctx.lineTo(200, 30);
+    ctx.moveTo(10, 120);
+    ctx.lineTo(200, 120);
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+
+    // draw vertical lines
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = "black";
+    lineCapList = ["butt", "round", "square"];
+
+    for (var i=0; i<3; i++){
+      ctx.beginPath();
+      ctx.moveTo(50+i*30, 30);
+      ctx.lineTo(50+i*30, 120);
+      ctx.lineCap = lineCapList[i];
+      ctx.stroke();
+    }
+  }
+}
+
+function line_join(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  var lineJoinList = ["round", "bevel", "miter"];
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.lineWidth = 15;
+    for(var i=0; i<lineJoinList.length; i++){
+      ctx.beginPath();
+      ctx.moveTo(10, 10 + i*40);
+      ctx.lineTo(70, 40 + i*40);
+      ctx.lineTo(130, 10 + i*40);
+      ctx.lineTo(190, 40 + i*40);
+      ctx.lineTo(250, 10 + i*40);
+      ctx.lineJoin = lineJoinList[i];
+      ctx.stroke();
+    }
+  }
+}
+
+
+function miter_limit(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  miterLimitList = [0, 4, 10, 20];
+  miterLimitCounter = 0;
+  function draw(){
+    if(canvas.getContext){
+      var ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw guides
+      ctx.strokeStyle = "#09f";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(5, 50, 160, 50);
+
+      // Set line styles
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 10;
+
+      if (miterLimitCounter > miterLimitList.length-1){
+        miterLimitCounter = 0;
+      }
+      ctx.miterLimit = miterLimitList[miterLimitCounter];
+      miterLimitCounter++;
+
+      // Draw lines
+      ctx.beginPath();
+      ctx.moveTo(0, 100);
+      for (var i=0; i<20; i++){
+        var dy = i % 2 == 0 ? 25 : -25;
+        ctx.lineTo(Math.pow(i, 1.5) * 2, 75 + dy);
+      }
+      ctx.stroke();
+    }
+  }
+  setInterval(draw, 2*10*1000/60);
+
+}
+
+function line_dash(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+  }
+
+  var offset = 0;
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setLineDash([15, 12]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeRect(10, 10, 100, 100);
+  }
+
+  function march(){
+    if (offset > 160){
+      offset = 0;
+    }
+    offset++;
+    draw();
+    setTimeout(march, 1000/60);
+  }
+  march();
+}
+
+function linear_gradient(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    var linGrad = ctx.createLinearGradient(10, 10, 130, 130);
+    linGrad.addColorStop(0, "blue");
+    linGrad.addColorStop(0.5, "green");
+    linGrad.addColorStop(0.5, "yellow");
+    linGrad.addColorStop(1, "red");
+
+    ctx.fillStyle = linGrad;
+    //ctx.strokeStyle = linGrad;
+
+    ctx.fillRect(10, 10, 130, 130);
+    ctx.strokeRect(50, 50, 50, 50);
+  }
+}
+
+
+function radial_gradient(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // create radial gradient object
+    var radGrad = ctx.createRadialGradient(45, 45, 10, 52, 50, 30);
+
+    // add color stop
+    radGrad.addColorStop(0, "#A7D30C");
+    radGrad.addColorStop(0.9, "#019F62");
+    radGrad.addColorStop(1, "rgba(1, 159, 98, 0)");
+
+    var radGrad2 = ctx.createRadialGradient(105, 105, 20, 112, 120, 50);
+    radGrad2.addColorStop(0, "#FF5F98");
+    radGrad2.addColorStop(0.75, "#FF0188");
+    radGrad2.addColorStop(1, "rgba(255, 1, 136, 0)");
+
+    var radGrad3 = ctx.createRadialGradient(95, 15, 15, 102, 20, 40);
+    radGrad3.addColorStop(0, "#00C9FF");
+    radGrad3.addColorStop(0.8, "#00B5E2");
+    radGrad3.addColorStop(1, "rgba(0, 201, 255, 0)");
+
+    var radGrad4 = ctx.createRadialGradient(0, 150, 50, 0, 140, 90);
+    radGrad4.addColorStop(0, "#F4F201");
+    radGrad4.addColorStop(0.8, "#E4C700");
+    radGrad4.addColorStop(1, "rgba(228, 199, 0, 0)");
+
+    // draw shapes
+    ctx.fillStyle = radGrad4;
+    ctx.fillRect(0, 0, 150, 150);
+    ctx.fillStyle = radGrad3;
+    ctx.fillRect(0, 0, 150, 150);
+    ctx.fillStyle = radGrad2;
+    ctx.fillRect(0, 0, 150, 150);
+    ctx.fillStyle = radGrad;
+    ctx.fillRect(0, 0, 150, 150);
+  }
+}
+
+
+function create_pattern(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // create new image object to use as pattern
+    var img = new Image();
+    img.src = "../img/Canvas_createpattern.png";
+    img.onload = function() {
+      // create pattern
+      var pattern = ctx.createPattern(img, "repeat");
+      ctx.fillStyle = pattern;
+      ctx.fillRect(0, 0, 300, 150);
+    };
+  }
+}
+
+function shadows(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.shadowOffsetX = 10;
+    ctx.shadowOffsetY = 20;
+    ctx.shadowBlur = 2;
+    ctx.shadowColor = "rgba(0, 0, 0, 1)";
+
+    ctx.font = "30px Times New Roman";
+    ctx.fillStyle = "green";
+    ctx.fillText("Shadows Here...", 50, 75);
+  }
+}
+
+function fill_rules(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    ctx.arc(50, 50, 30, 0, Math.PI*2, true);
+    ctx.arc(50, 50, 15, 0, Math.PI*2, true);
+    ctx.fill("evenodd");
+  }
+}
 
 main();
 
