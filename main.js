@@ -25,6 +25,8 @@ function main(){
     create_pattern();
     shadows();
     fill_rules();
+    fill_text();
+    text_baseline();
 }
 
 
@@ -644,6 +646,35 @@ function fill_rules(){
     ctx.arc(50, 50, 30, 0, Math.PI*2, true);
     ctx.arc(50, 50, 15, 0, Math.PI*2, true);
     ctx.fill("evenodd");
+  }
+}
+
+
+function fill_text(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.font = "48px serif";
+    ctx.fillText("Hello World", 10, 50);
+    ctx.font = "30px serif";
+    ctx.strokeText("Hello Computer", 10, 100);
+  }
+}
+
+
+function text_baseline(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.font = "48px sans-serif";
+    ctx.textBaseline = "top";
+    ctx.strokeText("Text Baseline", 0, 50);
   }
 }
 
