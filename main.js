@@ -27,6 +27,9 @@ function main(){
     fill_rules();
     fill_text();
     text_baseline();
+    line_graph();
+    tiling_image();
+    framing_image();
 }
 
 
@@ -677,6 +680,71 @@ function text_baseline(){
     ctx.strokeText("Text Baseline", 0, 50);
   }
 }
+
+function line_graph(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext('2d');
+
+    var img = new Image();
+    img.src = "../img/backdrop.png";
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0);
+      ctx.beginPath();
+      ctx.moveTo(30, 96);
+      ctx.lineTo(70, 66);
+      ctx.lineTo(103, 76);
+      ctx.lineTo(170, 15);
+      ctx.stroke();
+    }
+  }
+}
+
+function tiling_image(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    var img = new Image();
+    img.src = "../img/rhino.jpg";
+    img.onload = function(){
+      for(var i=0; i<4; i++){
+        for(var j=0; j<3; j++){
+          ctx.drawImage(img, j*50, i*38, 50, 38);
+        }
+      }
+    }
+  }
+}
+
+function framing_image(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    var frame = new Image();
+    frame.src = "../img/Canvas_picture_frame.png";
+    frame.onload = function(){
+      ctx.drawImage(frame, 0, 0);
+    };
+
+    var rhino = new Image();
+    rhino.src = "../img/rhino.jpg";
+    rhino.onload = function(){
+      ctx.drawImage(rhino, 33, 71, 104, 124,
+                           20, 21, 87, 104);
+    };
+
+  }
+}
+
+
 
 main();
 
