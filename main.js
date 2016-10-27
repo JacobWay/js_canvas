@@ -30,6 +30,8 @@ function main(){
     line_graph();
     tiling_image();
     framing_image();
+    save_restore();
+    translating();
 }
 
 
@@ -744,6 +746,52 @@ function framing_image(){
   }
 }
 
+
+function save_restore(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.fillRect(0, 0, 150, 150);   // Draw a rectangle with default settings
+    ctx.save(); // Save the default state
+
+    ctx.fillStyle = "#09F"; // Make changes to the settings
+    ctx.fillRect(15, 15, 120, 120); // Draw a rectangle with new settings
+
+    ctx.save(); // Save the current state
+    ctx.fillStyle = "#FFF";  // Make changes to the settings
+    ctx.globalAlpha = 0.5;
+    ctx.fillRect(30, 30, 90, 90);   // Draw a rectangle with new settings
+
+    ctx.restore();  // Restore previous state
+    ctx.fillRect(45, 45, 60, 60);   // Draw a rectangle with restored settings
+
+    ctx.restore();  // Restore original state
+    ctx.fillRect(60, 60, 30, 30);   // Draw a rectangle with restored settings
+  }
+}
+
+function translating(){
+  var canvas = document.createElement("canvas");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    for(var i=0; i<5; i++){
+      for(var j=0; j<5; j++){
+        ctx.save();
+        var rgbValue = "rgb(" + (51*i) + ", " + (255-51*j) + ", 255)"; 
+        console.log("rgbValue...", rgbValue);
+        ctx.fillStyle = rgbValue;
+        ctx.fillRect(10 + 50*j, 10 + 30*i, 25, 25);
+        ctx.restore();
+      }
+    }
+  }
+}
 
 
 main();
