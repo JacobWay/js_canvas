@@ -32,6 +32,9 @@ function main(){
     framing_image();
     save_restore();
     translating();
+    rotating();
+    scaling();
+    transforming();
 }
 
 
@@ -775,6 +778,7 @@ function save_restore(){
 
 function translating(){
   var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "translating");
   document.body.append(canvas);
 
   if(canvas.getContext){
@@ -789,6 +793,88 @@ function translating(){
         ctx.fillRect(10 + 50*j, 10 + 30*i, 25, 25);
         ctx.restore();
       }
+    }
+  }
+}
+
+
+function rotating(){
+  var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "rotating");
+
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // Left rectangles, rotate from canvas origin
+    ctx.save();
+
+    ctx.fillStyle = "#0095DD";
+    ctx.fillRect(30, 30, 100, 100);
+    ctx.save();
+
+    ctx.rotate((Math.PI/180)*25);
+    ctx.fillStyle = "#4D4E53";
+    ctx.fillRect(30, 30, 100, 100);
+    ctx.restore();
+
+    // Right rectangles, rotate from rectangle center
+    ctx.fillStyle = "#0095DD"
+    ctx.fillRect(150, 30, 100, 100);
+
+    ctx.translate(150+50, 30+50);
+    ctx.fillStyle = "#4D4E53";
+    ctx.rotate((Math.PI/180)*45);
+    ctx.translate(-(150+50), -(30+50)); // Translate back
+    ctx.fillRect(150, 30, 100, 100);
+  }
+}
+
+function scaling(){
+  var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "scaling");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.save();
+    ctx.fillStyle = "green";
+    ctx.fillRect(1, 10, 10, 10);
+
+    ctx.scale(10, 3);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(1, 10, 10, 10);
+    ctx.restore();
+
+    ctx.font = "24px serif";
+    ctx.fillStyle = "red";
+    ctx.translate(10, 80);
+    ctx.rotate((Math.PI/180)*90);
+    ctx.translate(-10, -80);
+    ctx.fillText("Jacob", 10, 80);
+  }
+}
+
+
+function transforming(){
+  var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "transforming");
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    var sin = Math.sin(Math.PI/6);
+    var cos = Math.cos(Math.PI/6);
+    ctx.translate(100, 100);
+    var c = 0;
+    for(var i=0; i <= 12; i++){
+      c = Math.floor((255/12) * i);
+      ctx.fillStyle = "rgb(" + c + ", " + c + ", " + c + ")";
+      ctx.fillRect(0, 0, 50, 10);
+      ctx.transform(cos, sin, -sin, cos, 0, 0);
     }
   }
 }
