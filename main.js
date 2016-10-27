@@ -1,6 +1,7 @@
 (function(){
 
 function main(){
+    draw_title_text();
     draw_intersecting_rectangles();
     draw_two_triangles();
     draw_smiley_face();
@@ -35,6 +36,23 @@ function main(){
     rotating();
     scaling();
     transforming();
+}
+
+
+function draw_title_text(){
+  var canvas = document.createElement("canvas");
+  canvas.setAttribute("id", "title-text");
+  //canvas.style.display = "block";
+  document.body.append(canvas);
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.font = "40px serif";
+    ctx.textBaseline = "hanging";
+    ctx.strokeText("HTML5 Canvas", 0, 10);
+    ctx.strokeText("例子汇集", 0, 60);
+  }
 }
 
 
