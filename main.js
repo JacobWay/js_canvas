@@ -766,7 +766,7 @@ function framing_image(){
     };
 
     var rhino = new Image();
-    rhino.src = "../img/rhino.jpg";
+    rhino.src = "img/rhino.jpg";
     rhino.onload = function(){
       ctx.drawImage(rhino, 33, 71, 104, 124,
                            20, 21, 87, 104);
