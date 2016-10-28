@@ -638,15 +638,14 @@ function radial_gradient(){
 
 
 function create_pattern(){
-  var canvas = document.createElement("canvas");
-  document.body.append(canvas);
+  var canvas = createCanvas({"id": "create-pattern"});
 
   if(canvas.getContext){
     var ctx = canvas.getContext("2d");
 
     // create new image object to use as pattern
     var img = new Image();
-    img.src = "../img/Canvas_createpattern.png";
+    img.src = "img/Canvas_createpattern.png";
     img.onload = function() {
       // create pattern
       var pattern = ctx.createPattern(img, "repeat");
@@ -717,14 +716,13 @@ function text_baseline(){
 }
 
 function line_graph(){
-  var canvas = document.createElement("canvas");
-  document.body.append(canvas);
+  var canvas = createCanvas({"id": "line-graph"});
 
   if(canvas.getContext){
     var ctx = canvas.getContext('2d');
 
     var img = new Image();
-    img.src = "../img/backdrop.png";
+    img.src = "img/backdrop.png";
     img.onload = function(){
       ctx.drawImage(img, 0, 0);
       ctx.beginPath();
@@ -738,14 +736,13 @@ function line_graph(){
 }
 
 function tiling_image(){
-  var canvas = document.createElement("canvas");
-  document.body.append(canvas);
+  var canvas = createCanvas({"id": "tiling-image"});
 
   if(canvas.getContext){
     var ctx = canvas.getContext("2d");
 
     var img = new Image();
-    img.src = "../img/rhino.jpg";
+    img.src = "img/rhino.jpg";
     img.onload = function(){
       for(var i=0; i<4; i++){
         for(var j=0; j<3; j++){
@@ -757,14 +754,13 @@ function tiling_image(){
 }
 
 function framing_image(){
-  var canvas = document.createElement("canvas");
-  document.body.append(canvas);
+  var canvas = createCanvas({"id": "framing-image"});
 
   if(canvas.getContext){
     var ctx = canvas.getContext("2d");
 
     var frame = new Image();
-    frame.src = "../img/Canvas_picture_frame.png";
+    frame.src = "img/Canvas_picture_frame.png";
     frame.onload = function(){
       ctx.drawImage(frame, 0, 0);
     };
