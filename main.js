@@ -36,8 +36,20 @@ function main(){
     rotating();
     scaling();
     transforming();
+    stars_sky();
+    star(50);
+    clipping();
 }
 
+
+function createCanvas(attrValDict){
+  var canvas = document.createElement("canvas");
+  for(var key in attrValDict){
+    canvas.setAttribute(key, attrValDict[key]);
+  }
+  document.body.append(canvas);
+  return canvas;
+}
 
 function draw_title_text(){
   var canvas = document.createElement("canvas");
@@ -806,7 +818,6 @@ function translating(){
       for(var j=0; j<5; j++){
         ctx.save();
         var rgbValue = "rgb(" + (51*i) + ", " + (255-51*j) + ", 255)"; 
-        console.log("rgbValue...", rgbValue);
         ctx.fillStyle = rgbValue;
         ctx.fillRect(10 + 50*j, 10 + 30*i, 25, 25);
         ctx.restore();
@@ -897,6 +908,113 @@ function transforming(){
   }
 }
 
+function stars_sky(){
+  var canvas = createCanvas({"id": "stars-sky"});
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    // Draw background
+    var linGrad = ctx.createLinearGradient(0, 0, 0, 150);
+    linGrad.addColorStop(0, "#232256");
+    linGrad.addColorStop(1, "#143778");
+    ctx.fillStyle = linGrad;
+    ctx.fillRect(0, 0, 300, 150);
+
+    stars();
+    // Draw stars
+    function stars(){
+      for(var j=1; j<=100; j++){
+        ctx.save();
+        ctx.fillStyle = "#FFF";
+        ctx.translate(300 - Math.floor(Math.random()*300),
+                      150 - Math.floor(Math.random()*150));
+        drawStar(ctx, Math.floor(Math.random()*4)+2);
+        ctx.restore();
+      }
+    }
+
+  }
+}
+
+function drawStar(ctx, r){
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  for(var i=0; i<9; i++){
+    ctx.rotate(Math.PI/5);
+    if(i%2 === 0){
+      ctx.lineTo((r/0.525731)*0.200811, 0);
+    }else{
+      ctx.lineTo(r, 0);
+    }
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function star(r){
+  var canvas = createCanvas({"id": "star"});
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+    ctx.save();
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, 300, 150);
+
+    ctx.translate(150, 75);
+    ctx.fillStyle = "green";
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    for(var i=0; i<9; i++){
+      ctx.rotate(Math.PI/5);
+      if(i%2 == 0){
+        ctx.lineTo((r/0.525731)*0.200811, 0);
+      }else{
+        ctx.lineTo(r, 0)
+      }
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function clipping(){
+  var canvas = createCanvas({"id": "clipping"});
+
+  if(canvas.getContext){
+    var ctx = canvas.getContext("2d");
+
+    ctx.fillRect(0, 0, 150, 150);
+    ctx.translate(75, 75);
+
+    // Create a circular clipping path
+    ctx.beginPath();
+    ctx.arc(0, 0, 60, 0, Math.PI*2, true);
+    ctx.clip();
+
+    // Draw background
+    var linGrad = ctx.createLinearGradient(0, -75, 0, 75);
+    linGrad.addColorStop(0, "#232256");
+    linGrad.addColorStop(1, "#143778");
+
+    ctx.fillStyle = linGrad;
+    ctx.fillRect(-75, -75, 150, 150);
+
+    // Draw stars
+    for(var j=1; j<50; j++){
+      ctx.save();
+      ctx.fillStyle = "#fff";
+      ctx.translate(75-Math.floor(Math.random()*150),
+                    75-Math.floor(Math.random()*150));
+      drawStar(ctx, Math.floor(Math.random()*4)+2);
+      ctx.restore();
+    }
+
+  }
+}
 
 main();
 
